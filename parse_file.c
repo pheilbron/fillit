@@ -6,12 +6,14 @@
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 14:34:18 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/05/10 16:56:57 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/05/14 14:42:37 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft.h"
+
+extern char	g_tets[27][18];
 
 int		check_sides(char *tetramino, int pos)
 {
@@ -58,7 +60,7 @@ int		check_tetramino(char *tetramino)
 	return (1);
 }
 
-int		parse_file(int fd, char (*tetraminos)[27][18])
+int		parse_file(int fd)
 {
 	int		tet_i;
 	int		i;
@@ -71,12 +73,12 @@ int		parse_file(int fd, char (*tetraminos)[27][18])
 	{
 		if (ft_strlen(line) == 4 && i % 4 == 0 && i / 4 < 4)
 		{
-			ft_strncpy((*tetraminos)[tet_i] + i, line, 4);
+			ft_strncpy(g_tets[tet_i] + i, line, 4);
 			i += 4;
 		}
 		else if (!ft_strcmp(line, "") && i / 4 == 4)
 		{
-			if (!check_tetramino((*tetraminos)[tet_i++]))
+			if (!check_tetramino(g_tets[tet_i++]))
 				return (0);
 			i = 0;
 		}
@@ -84,40 +86,40 @@ int		parse_file(int fd, char (*tetraminos)[27][18])
 			return (0);
 		free(line);
 	}
-	return (check_tetramino((*tetraminos)[tet_i]) ? tet_i + 1 : 0);
+	return (check_tetramino(g_tets[tet_i]) ? tet_i + 1 : 0);
 }
 
-void	trim_tet(char (*tetraminos)[27][18], int pos)
+void	trim_tet(int pos)
 {
 	int	height;
 	int	width;
 
 	height = 0;
 	width = 0;
-	while (!ft_strncmp((*tetraminos)[pos], "....", 4))
-		ft_lrotstr((*tetraminos)[pos], 16, 4);
+	while (!ft_strncmp(g_tets[pos], "....", 4))
+		ft_lrotstr(g_tets[pos], 16, 4);
 	while (height * 4 < 16 &&
-			ft_strncmp((*tetraminos)[pos] + (height * 4), "....", 4))
+			ft_strncmp(g_tets[pos] + (height * 4), "....", 4))
 		height++;
-	while (!ft_modstrncmp((*tetraminos)[pos], "....", 4, 4))
-		ft_lmodrotstr((*tetraminos)[pos], 16, 4);
+	while (!ft_modstrncmp(g_tets[pos], "....", 4, 4))
+		ft_lmodrotstr(g_tets[pos], 16, 4);
 	while (width * 4 < 16 &&
-			ft_modstrncmp((*tetraminos)[pos] + width, "....", 4, 4))
+			ft_modstrncmp(g_tets[pos] + width, "....", 4, 4))
 		width++;
-	(*tetraminos)[pos][16] = width;
-	(*tetraminos)[pos][17] = height;
+	g_tets[pos][16] = width;
+	g_tets[pos][17] = height;
 }
 
-int		get_tets(int fd, char (*tetraminos)[27][18])
+int		get_tets(int fd)
 {
 	int	i;
 	int	len;
 
 	i = 0;
-	if ((len = parse_file(fd, tetraminos)) == 0)
+	if ((len = parse_file(fd)) == 0)
 		return (0);
 	while (i < len)
-		trim_tet(tetraminos, i++);
-	(*tetraminos)[len][0] = -1;
+		trim_tet(i++);
+	g_tets[len][0] = -1;
 	return (len);
 }
