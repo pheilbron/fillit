@@ -6,7 +6,7 @@
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 10:22:51 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/05/16 16:04:59 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/05/16 16:26:26 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		test(char (*partial)[15][15], char *t, int pos[2])
 	return (blocks_placed == 4);
 }
 
-int		*next_pos(char (*partial)[15][15], char *tet, int pos[2], int size)
+int		*next(char (*partial)[15][15], char *tet, int pos[2], int size)
 {
 	while (pos[0] + tet[16] - 1 < size && pos[1] + tet[17] - 1 < size)
 	{
@@ -110,17 +110,13 @@ int		solve(char (*partial)[15][15], int t_i, int pos[2], int size)
 	origin[1] = 0;
 	done = size;
 	if (g_tets[t_i][0] == -1)
-	{
-		print_solution(*partial, size);
-		return (size * -1);
-	}
-	pos = next_pos(partial, g_tets[t_i], pos, size);
+		return (print_solution(*partial, size) * -1);
+	pos = next(partial, g_tets[t_i], pos, size);
 	while (done >= 0 && pos[1] != -1)
 	{
 		place_tet(partial, g_tets[t_i], pos, t_i);
 		done = solve(partial, t_i + 1, origin, size);
-		pos = remove_tet(partial, t_i, pos);
-		pos = next_pos(partial, g_tets[t_i], pos, size);
+		pos = next(partial, g_tets[t_i], remove_tet(partial, t_i, pos), size);
 	}
 	if (done >= 0 && t_i == 0)
 	{

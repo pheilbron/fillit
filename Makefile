@@ -27,6 +27,7 @@ debug:
 
 clean:
 	rm -f $(OBJ) $(MAIN_OBJ)
+	make clean -C libft/
 
 clean_debug:
 	rm -f a.out
@@ -34,5 +35,6 @@ clean_debug:
 
 fclean: clean
 	rm -f $(NAME)
+	make fclean -C libft/
 
 re: fclean all

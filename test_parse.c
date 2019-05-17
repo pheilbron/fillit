@@ -6,6 +6,29 @@
 
 char g_solution[12][12];
 
+void	print_tets(int len)
+{
+	int	i;
+	int	tet_i;
+
+	i = 0;
+	tet_i = 0;
+	while (tet_i < len)
+	{
+		printf("%cx%c\n", g_tets[tet_i][16] + '0', g_tets[tet_i][17] + '0');
+		while (i < 16)
+		{
+			write(1, g_tets[tet_i] + i, 4);
+			write(1, "\n", 1);
+			i += 4;
+		}
+		if (tet_i + 1 != len)
+			write(1, "\n", 1);
+		i = 0;
+		tet_i++;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	char	*file;
