@@ -6,7 +6,7 @@
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 14:34:18 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/05/14 14:42:37 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/08/02 14:52:54 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,31 +59,28 @@ int		check_tetramino(char *tetramino)
 	return (1);
 }
 
-void	set_tet_points(t_piece **tets, int pos)
+void	trim_tet(t_piece *tet)
 {
-	int	i;
+	int	height;
+	int	width;
 
-	i = 0;
-	while (i < 16)
-	{
-		if ((*tets)[pos].char_tet[i] == '#')
-		{
-			if (i / 4 < (*tets)[pos].pos.x)
-				(*tets)[pos].pos.x = i / 4;
-			if (i % 4 < (*tets)[pos].pos.y)
-				(*tets)[pos].pos.y = i % 4;
-			if (i / 4 > (*tets)[pos].size.x)
-				(*tets)[pos].size.x = i / 4;
-			if (i % 4 > (*tets)[pos].size.y)
-				(*tets)[pos].size.y = i % 4;
-		}
-		i++;
-	}
-	(*tets)[pos].size.x -= (*tets)[pos].pos.x;
-	(*tets)[pos].size.y -= (*tets)[pos].pos.y;
+	height = 0;
+	width = 0;
+	while (!ft_strncmp(tet->char_tet, "....", 4))
+		ft_lrotstr(tet->char_tet, 16, 4);
+	while (height * 4 < 16 &&
+			ft_strncmp(tet->char_tet + (height * 4), "....", 4))
+		height++;
+	while (!ft_modstrncmp(tet->char_tet, "....", 4, 4))
+		ft_lmodrotstr(tet->char_tet, 16, 4);
+	while (width * 4 < 16 &&
+			ft_modstrncmp(tet->char_tet + width, "....", 4, 4))
+		width++;
+	tet->size.x = width;
+	tet->size.y = height;
 }
 
-int		fill_in_tets(t_piece **tets, int len)
+int		fill_in_tets(t_piece (*tets)[27], int len)
 {
 	int	i;
 	int	j;
@@ -91,26 +88,31 @@ int		fill_in_tets(t_piece **tets, int len)
 	i = 0;
 	while (i < len)
 	{
-		(*tets)[i].pos = (t_point){3, 3};
-		(*tets)[i].size = (t_point){0, 0};
-		set_tet_points(tets, i);
-		(*tets)[i].board_pos = {0, 0};
-		(*tets)[i]->prev_tet = (i > 0 ? (*tets)[i - 1] : NULL);
+		trim_tet((*tets) + i);
+		(*tets)[i].pos = (t_point){0, 0};
 		(*tets)[i].id = 'A' + i;
 		(*tets)[i].bit_tet = 0;
 		j = 0;
 		while (j < 16)
 		{
 			if ((*tets)[i].char_tet[j] == '#')
-				tetris.value |= (1UL << (63 - (((j / 4) * 16) + (j % 4))));
+				(*tets)[i].bit_tet |=
+					(1UL << (((j / 4) * 16) + (15 - (j % 4))));
 			j++;
 		}
+		j = i - 1;
+		while (j >= 0 && (*tets)[j].bit_tet != (*tets)[i].bit_tet)
+			j--;
+		if (i >= 0 && (*tets)[j].bit_tet == (*tets)[i].bit_tet)
+			(*tets)[i].prev_same = (*tets) + j;
+		else
+			(*tets)[i].prev_same = NULL;
 		i++;
 	}
+	return (len);
 }
 
-
-int		parse_file(int fd, t_piece **tets)
+int		parse_file(int fd, t_piece (*tets)[27])
 {
 	int		tet_i;
 	int		i;
@@ -135,6 +137,6 @@ int		parse_file(int fd, t_piece **tets)
 		free(line);
 	}
 	if (check_tetramino((*tets)[tet_i].char_tet))
-		return (fill_in_tets(tets, tet_i));
+		return (fill_in_tets(tets, tet_i + 1));
 	return (0);
 }
