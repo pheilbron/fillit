@@ -6,7 +6,7 @@
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 21:58:36 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/02 12:32:45 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/08/02 15:02:44 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	make_char_board(char (*board)[16][16], t_piece *tets, int len)
 		{
 			if (tets[i].char_tet[j] == '#')
 			{
-				(*board)[tets[i].pos.y + j / 4][tets[i].pos.x + j % 4] = tets[i].id;
+				(*board)[tets[i].pos.y + j / 4][tets[i].pos.x + j % 4] =
+					'A' + i;
 				blocks_placed++;
 			}
 			j++;

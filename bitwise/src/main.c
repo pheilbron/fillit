@@ -6,7 +6,7 @@
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:56:26 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/02 14:52:53 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/08/02 15:04:55 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ void	print_parse_info(t_piece tets[27], int len)
 	{
 		printf("TET: %s\nBIT_TET: %llu\nSize: (%d, %d)\nPos: (%d, %d)\nID: %c\n",
 				tets[i].char_tet, tets[i].bit_tet, tets[i].size.x, tets[i].size.y,
-				tets[i].pos.x, tets[i].pos.y, tets[i].id);
+				tets[i].pos.x, tets[i].pos.y, 'A' + i);
 		printf("PREV_TET: %p ", tets[i].prev_same);
-		if (tets[i].prev_same)
-			printf("(id) %c", tets[i].prev_same->id);
 		printf("\n\n");
 	}
 }

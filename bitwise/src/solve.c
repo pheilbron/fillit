@@ -6,7 +6,7 @@
 /*   By: kiblack <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 21:41:46 by kiblack           #+#    #+#             */
-/*   Updated: 2019/08/02 14:52:53 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/08/02 15:13:58 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int		check_piece(t_piece *tet, uint16_t *board)
 {
 	return (!(*(uint64_t *)(board + tet->pos.y) &
-					(tet->bit_tet >> tet->pos.x)));
+				(tet->bit_tet >> tet->pos.x)));
 }
 
 void	add_remove(t_piece *tet, uint16_t *board)

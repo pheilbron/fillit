@@ -6,7 +6,7 @@
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/05 14:34:18 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/02 14:52:54 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/08/02 15:06:40 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,13 @@ int		check_sides(char *tetramino, int pos)
 	int	touch;
 
 	touch = 0;
-	if (pos > 3)
-		if (tetramino[pos - 4] == '#')
+	if (pos > 3 && tetramino[pos - 4] == '#')
 			touch++;
-	if (pos < 12)
-		if (tetramino[pos + 4] == '#')
+	if (pos < 12 && tetramino[pos + 4] == '#')
 			touch++;
-	if (pos % 4 > 0)
-		if (tetramino[pos - 1] == '#')
+	if (pos % 4 > 0 && tetramino[pos - 1] == '#')
 			touch++;
-	if (pos % 4 < 3)
-		if (tetramino[pos + 1] == '#')
+	if (pos % 4 < 3 && tetramino[pos + 1] == '#')
 			touch++;
 	return (touch);
 }
@@ -90,7 +86,6 @@ int		fill_in_tets(t_piece (*tets)[27], int len)
 	{
 		trim_tet((*tets) + i);
 		(*tets)[i].pos = (t_point){0, 0};
-		(*tets)[i].id = 'A' + i;
 		(*tets)[i].bit_tet = 0;
 		j = 0;
 		while (j < 16)

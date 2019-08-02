@@ -6,7 +6,7 @@
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/01 23:03:17 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/02 14:11:32 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/08/02 15:02:56 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct	s_piece
 	uint64_t		bit_tet;
 	t_point			size;
 	t_point			pos;
-	char			id;
 	struct s_piece	*prev_same;
 }				t_piece;
 
