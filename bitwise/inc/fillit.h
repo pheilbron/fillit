@@ -12,7 +12,7 @@ typedef struct	s_point
 typedef struct	s_piece
 {
 	char			char_tet[16];
-	uint16_t		bit_tet;
+	uint64_t		bit_tet;
 	t_point			size;
 	t_point			pos;
 	t_point			board_pos;

@@ -102,7 +102,7 @@ int		fill_in_tets(t_piece **tets, int len)
 		while (j < 16)
 		{
 			if ((*tets)[i].char_tet[j] == '#')
-				tetris.value |= (1L << (16 - j));
+				tetris.value |= (1UL << (63 - (((j / 4) * 16) + (j % 4))));
 			j++;
 		}
 		i++;
