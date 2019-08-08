@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_dstr_new.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/09 12:56:26 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/07 16:32:56 by pheilbro         ###   ########.fr       */
+/*   Created: 2019/07/28 07:59:40 by pheilbro          #+#    #+#             */
+/*   Updated: 2019/08/07 16:17:26 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
 #include "libft.h"
 
-int	main(int argc, char **argv)
+t_dstring	*ft_dstr_new(char *data, size_t len, size_t cap)
 {
-	int			fd;
-	int			len;
-	t_piece		tets[27];
-	uint16_t	board[16];
+	t_dstring	*s;
 
-	ft_bzero(board, sizeof(uint16_t) * 16);
-	if (argc != 2)
-		ft_putstr("usage: ./fillit source_file\n");
-	else if ((fd = open(argv[1], O_RDONLY)) > 0)
+	if ((s = malloc(sizeof(*s))))
 	{
-		if ((len = parse_file(fd, &tets)))
+		if ((s->buf = ft_memalloc(sizeof(*data) * (cap + 1))))
 		{
-			tets[len].char_tet[0] = '\0';
-			solve_puzzle(board, tets, len);
+			ft_memcpy(s->buf, data, len);
+			s->buf[len] = '\0';
+			s->cap = cap;
+			s->pos = len;
+			return (s);
 		}
-		else
-			ft_putstr("error\n");
 	}
-	else
-		ft_putstr("error\n");
-	return (0);
+	return (NULL);
 }

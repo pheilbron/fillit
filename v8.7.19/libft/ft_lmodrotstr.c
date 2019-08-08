@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lmodrotstr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/09 12:56:26 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/07 16:32:56 by pheilbro         ###   ########.fr       */
+/*   Created: 2019/05/09 14:22:59 by pheilbro          #+#    #+#             */
+/*   Updated: 2019/08/07 16:18:25 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
 #include "libft.h"
 
-int	main(int argc, char **argv)
+void	ft_lmodrotstr(char *s, size_t len, size_t mod)
 {
-	int			fd;
-	int			len;
-	t_piece		tets[27];
-	uint16_t	board[16];
+	char	temp;
+	size_t	i;
 
-	ft_bzero(board, sizeof(uint16_t) * 16);
-	if (argc != 2)
-		ft_putstr("usage: ./fillit source_file\n");
-	else if ((fd = open(argv[1], O_RDONLY)) > 0)
+	i = 1;
+	temp = s[0];
+	while (i < len)
 	{
-		if ((len = parse_file(fd, &tets)))
-		{
-			tets[len].char_tet[0] = '\0';
-			solve_puzzle(board, tets, len);
-		}
+		if (i % mod == 0)
+			temp = s[i];
 		else
-			ft_putstr("error\n");
+		{
+			s[i - 1] = s[i];
+			if (i % mod == mod - 1)
+				s[i] = temp;
+		}
+		i++;
 	}
-	else
-		ft_putstr("error\n");
-	return (0);
 }

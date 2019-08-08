@@ -1,39 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/09 12:56:26 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/07 16:32:56 by pheilbro         ###   ########.fr       */
+/*   Created: 2019/04/29 16:30:04 by pheilbro          #+#    #+#             */
+/*   Updated: 2019/08/07 16:21:20 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
 #include "libft.h"
 
-int	main(int argc, char **argv)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	int			fd;
-	int			len;
-	t_piece		tets[27];
-	uint16_t	board[16];
+	size_t	i;
 
-	ft_bzero(board, sizeof(uint16_t) * 16);
-	if (argc != 2)
-		ft_putstr("usage: ./fillit source_file\n");
-	else if ((fd = open(argv[1], O_RDONLY)) > 0)
+	i = 0;
+	if (dstsize != 0)
 	{
-		if ((len = parse_file(fd, &tets)))
+		while (src[i] && i < dstsize - 1)
 		{
-			tets[len].char_tet[0] = '\0';
-			solve_puzzle(board, tets, len);
+			dst[i] = src[i];
+			i++;
 		}
-		else
-			ft_putstr("error\n");
+		dst[i] = '\0';
 	}
-	else
-		ft_putstr("error\n");
-	return (0);
+	return (ft_strlen(src));
 }

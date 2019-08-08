@@ -1,39 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/09 12:56:26 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/07 16:32:56 by pheilbro         ###   ########.fr       */
+/*   Created: 2019/04/29 11:03:39 by pheilbro          #+#    #+#             */
+/*   Updated: 2019/08/07 16:22:30 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
 #include "libft.h"
 
-int	main(int argc, char **argv)
+char	*ft_strstr(const char *haystack, const char *needle)
 {
-	int			fd;
-	int			len;
-	t_piece		tets[27];
-	uint16_t	board[16];
+	size_t	i;
+	size_t	j;
+	size_t	h_len;
+	size_t	n_len;
 
-	ft_bzero(board, sizeof(uint16_t) * 16);
-	if (argc != 2)
-		ft_putstr("usage: ./fillit source_file\n");
-	else if ((fd = open(argv[1], O_RDONLY)) > 0)
+	i = 0;
+	h_len = ft_strlen(haystack);
+	n_len = ft_strlen(needle);
+	if (needle == 0)
+		return ((char *)haystack);
+	while (h_len >= n_len && i <= h_len - n_len)
 	{
-		if ((len = parse_file(fd, &tets)))
+		j = 0;
+		while (j < n_len)
 		{
-			tets[len].char_tet[0] = '\0';
-			solve_puzzle(board, tets, len);
+			if (haystack[j + i] != needle[j])
+				break ;
+			j++;
 		}
-		else
-			ft_putstr("error\n");
+		if (j == n_len)
+			return ((char *)(haystack + i));
+		i++;
 	}
-	else
-		ft_putstr("error\n");
-	return (0);
+	return (NULL);
 }

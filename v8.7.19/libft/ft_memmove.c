@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/09 12:56:26 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/08/07 16:32:56 by pheilbro         ###   ########.fr       */
+/*   Created: 2019/04/29 10:09:23 by pheilbro          #+#    #+#             */
+/*   Updated: 2019/08/07 16:19:35 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
 #include "libft.h"
 
-int	main(int argc, char **argv)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	int			fd;
-	int			len;
-	t_piece		tets[27];
-	uint16_t	board[16];
+	int				i;
+	unsigned char	*dst_c;
+	unsigned char	*src_c;
 
-	ft_bzero(board, sizeof(uint16_t) * 16);
-	if (argc != 2)
-		ft_putstr("usage: ./fillit source_file\n");
-	else if ((fd = open(argv[1], O_RDONLY)) > 0)
+	i = (int)len - 1;
+	dst_c = (unsigned char *)dst;
+	src_c = (unsigned char *)src;
+	if (dst > src && (src + len) > dst)
 	{
-		if ((len = parse_file(fd, &tets)))
+		while (i >= 0)
 		{
-			tets[len].char_tet[0] = '\0';
-			solve_puzzle(board, tets, len);
+			dst_c[i] = src_c[i];
+			i--;
 		}
-		else
-			ft_putstr("error\n");
 	}
 	else
-		ft_putstr("error\n");
-	return (0);
+		ft_memcpy(dst, src, len);
+	return (dst);
 }
