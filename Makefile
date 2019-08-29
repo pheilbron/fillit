@@ -1,40 +1,43 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/04/30 13:56:22 by pheilbro          #+#    #+#              #
+#    Updated: 2019/08/27 21:53:12 by pheilbro         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME		= fillit
 
-SRC			= parse_file.c aux_func.c solve.c
-MAIN		= main.c
-
-OBJ			= $(SRC:.c=.o)
-MAIN_OBJ	= $(MAIN:.c=.o)
-
 CC			= gcc
-INC			= -I . -I libft/includes
-LIB			= -Llibft/ -lft
-FLAGS		= -Wall -Werror -Wextra
-DEBUG_FLAGS	= -g -fsanitize=address
+INC			= -I. -I libft
+LIB			= -Llibft -lft
+CFLAGS		= -Wall -Werror -Wextra
+
+SRC			= main parse_file solve print_board
+OBJ			= $(patsubst %, %.o, $(SRC))
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	make -C libft/
-	$(CC) $(FLAGS) $(INC) $(LIB) -o $(NAME) $(OBJ) $(MAIN_OBJ)
+	@make -C libft/
+	@$(CC) $(CFLAGS) $(INC) $(LIB) -o $@ $(OBJ)
 
-$(OBJ): $(SRC) $(TEST_SRC)
-	$(CC) $(FLAGS) $(INC) -c $(SRC) $(MAIN)
-
-debug:
-	make -C libft/
-	$(CC) $(FLAGS) $(DEBUG_FLAGS) $(INC) $(LIB) $(SRC) $(MAIN)
+%.o: %.c
+	@echo Compiling $<.
+	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 clean:
-	rm -f $(OBJ) $(MAIN_OBJ)
-	make clean -C libft/
-
-clean_debug:
-	rm -f a.out
-	rm -rf a.out.dSYM 
+	@make clean -C libft/
+	@echo Removing object files...
+	@rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
-	make fclean -C libft/
+	@make fclean -C libft/
+	@echo Removing $(NAME)...
+	@rm -f $(NAME)
 
 re: fclean all

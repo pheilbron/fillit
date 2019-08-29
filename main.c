@@ -6,34 +6,35 @@
 /*   By: pheilbro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/09 12:56:26 by pheilbro          #+#    #+#             */
-/*   Updated: 2019/05/16 16:20:28 by pheilbro         ###   ########.fr       */
+/*   Updated: 2019/08/27 21:53:36 by pheilbro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-
-char	g_tets[27][18];
+#include "libft.h"
 
 int	main(int argc, char **argv)
 {
-	int		fd;
-	int		len;
-	int		pos[2];
-	char	board[15][15];
+	int			fd;
+	int			len;
+	t_piece		tets[27];
+	uint16_t	board[16];
 
-	clear_board(&board);
-	pos[0] = -1;
-	pos[1] = 0;
+	ft_bzero(board, sizeof(uint16_t) * 16);
 	if (argc != 2)
-		write(1, "usage: ./fillit source_file\n", 28);
+		ft_putstr("usage: ./fillit source_file\n");
 	else if ((fd = open(argv[1], O_RDONLY)) > 0)
 	{
-		if ((len = get_tets(fd)))
-			solve(&board, 0, pos, start_size(len));
+		if ((len = parse_file(fd, &tets)))
+		{
+			tets[len].char_tet[0] = '\0';
+			solve_puzzle(board, tets, len);
+		}
 		else
-			write(1, "error\n", 6);
+			ft_putstr("error\n");
+		close(fd);
 	}
 	else
-		write(1, "error\n", 6);
+		ft_putstr("error\n");
 	return (0);
 }
